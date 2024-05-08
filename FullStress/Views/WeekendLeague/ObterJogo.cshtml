@@ -1,0 +1,141 @@
+﻿<div class="modal-body">
+    <div id="alertasModal"></div>
+    <div id="modal-alertas-Euler"></div>
+    <div class="row">
+        <div class="nav-tabs-custom">
+            <div class="tab-content">
+                <div class="tab-pane active" id="tab_Euler_1-1">
+                    <div class="col-md-12">
+                        <div class="col-md-2">
+                            <div class="form-group">
+                                <label>Gols a Favor <span class="required">*</span></label>
+                                <input type="text" id="golsFavor" value="@ViewBag.golsFavor" onkeypress="return isNumberKey(event);" maxlength="2" required="required" class="form-control desabilitarVisualizar">
+                            </div>
+                        </div>
+                        <div class="col-md-1">
+                            <div class="form-group">
+                                <label><span class="required">&nbsp;</span></label>
+                                <input type="text" required="required" class="form-control" style="text-align:center" value="X" disabled>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="form-group">
+                                <label>Gols contra <span class="required">*</span></label>
+                                <input type="text" id="golsContra" value="@ViewBag.golsContra" onkeypress="return isNumberKey(event);" maxlength="2" required="required" class="form-control desabilitarVisualizar">
+                            </div>
+                        </div>
+                        <div class="col-md-7">
+                            <div class="form-group">
+                                <label>PSN Adversário <span class="required">*</span></label>
+                                <input type="text" id="psnAdvsersario" value="@ViewBag.psnAdversario" maxlength="100" required="required" class="form-control desabilitarVisualizar">
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="form-group">
+                                <label>Precisão Passes <span class="required">*</span></label>
+                                <input type="text" id="precisaoPasses" value="@ViewBag.precisaoPasses" onkeypress="return isNumberKey(event);" maxlength="2" required="required" class="form-control desabilitarVisualizar">
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="form-group">
+                                <label>Posse de Bola <span class="required">*</span></label>
+                                <input type="text" id="posseBola" value="@ViewBag.posseBola" onkeypress="return isNumberKey(event);" maxlength="2" required="required" class="form-control desabilitarVisualizar">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Melhor em Campo</label>
+                                <select id="IdMelhorEmCampo" class="form-control select2 desabilitarVisualizar" style="width:100%">
+                                    <option value="">Selecione...</option>
+                                    @if (ViewBag.lstJogador != null)
+                                    {
+                                        foreach (var jogador in ViewBag.lstJogador)
+                                        {
+                                            <option value="@jogador.Id" @(ViewBag.idJogadorMelhorCampo == jogador.Id ? "selected" : "")>@(jogador.Nome + " - " + jogador.Overral)</option>
+                                        }
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="form-group">
+                                <div class="checkbox desabilitarVisualizar">
+                                    <label style="margin-top:15px;">
+                                        <br />
+                                        <input type="checkbox" id="quitRage" @(ViewBag.quitRage ? "checked" : "") class="flat"> Quit Rage
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label>Observação</label>
+                                <textarea class="form-control desabilitarVisualizar" id="Observacao" rows="4">@ViewBag.observacao</textarea>
+                            </div>
+                        </div>
+                        <div id="divArtilheiro">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>Jogador Gol <span class="required">*</span></label>
+                                    <select id="IdJogadorGol" class="form-control select2" style="width:100%">
+                                        <option value="">Selecione...</option>
+                                        @if (ViewBag.lstJogador != null)
+                                        {
+                                            foreach (var jogador in ViewBag.lstJogador)
+                                            {
+                                                <option value="@jogador.Id">@(jogador.Nome + " - " + jogador.Overral)</option>
+                                            }
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="form-group">
+                                    <label>Gols<span class="required">*</span></label>
+                                    <input type="text" id="quantidadeGols" required="required" class="form-control">
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>Jogador Assistencia <span class="required">*</span></label>
+                                    <select id="IdJogadorAssistencia" class="form-control select2" style="width:100%">
+                                        <option value="">Selecione...</option>
+                                        @if (ViewBag.lstJogador != null)
+                                        {
+                                            foreach (var jogador in ViewBag.lstJogador)
+                                            {
+                                                <option value="@jogador.Id">@(jogador.Nome + " - " + jogador.Overral)</option>
+                                            }
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="form-group">
+                                    <label>Assistências<span class="required">*</span></label>
+                                    <div class="input-group">
+                                        <input type="text" id="quantidadeAssistencia" required="required" class="form-control">
+                                        <span class="input-group-btn">
+                                            <button type="button" name="add" onclick="adicionarDetalhe()" class="btn btn-info">
+                                                <i class="fa fa-plus"></i>
+                                            </button>
+                                        </span>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <p>&nbsp;</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@if (ViewBag.idWeekendLeagueJogo <= 0)
+{
+    <div class="modal-footer">
+        <button type="button" class="btn btn-link" data-dismiss="modal"><i class="fa fa-times"></i>&nbsp;Cancelar</button>
+        <button type="button" onclick="salvarJogo();" id="btnSalvarClubeJogador" class="btn btn-success pull-right"><i class="fa fa-check"></i> Salvar Jogo</button>
+    </div>
+}

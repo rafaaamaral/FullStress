@@ -1,0 +1,221 @@
+﻿
+@{
+    ViewBag.Title = "Resumo WL";
+}
+
+<div class="right_col" role="main">
+    <div class="">
+        <div class="page-title">
+            <div class="title_left">
+                <h3>Resumo Weekend League <small> - Nome WL</small> </h3>
+            </div>
+        </div>
+        <div class="clearfix"></div>
+        <div class="ln_solid"></div>
+        <div class="row">
+            <div class="col-md-6" style="margin: auto;width: 50%;padding: 10px;">
+                <div style="margin: auto;width: 50%;padding: 10px;">
+                    <img src="~/Imagens/ClassificacaoWL/Ouro1.png" style="width:150px;" />
+                    <h1>OURO 1</h1>
+                </div>
+            </div>
+        </div>
+        <div class="clearfix"><br /></div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="x_panel">
+                    <div class="x_title">
+                        <h2>Artilheiros <small>TOP 3</small></h2>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="x_content">
+                        <div class="table-responsive">
+                            <table class="table table-striped jambo_table bulk_action">
+                                <thead>
+                                    <tr class="headings">
+                                        <th class="column-title">Jogador</th>
+                                        <th class="column-title">Overral</th>
+                                        <th class="column-title">Quantidade de Gols</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr class="even pointer">
+                                        <td class=" ">Rashford</td>
+                                        <td class=" ">85</td>
+                                        <td class=" ">35</i></td>
+                                    </tr>
+                                    <tr class="even pointer">
+                                        <td class=" ">Mahrez</td>
+                                        <td class=" ">85</td>
+                                        <td class=" ">29</i></td>
+                                    </tr>
+
+                                    <tr class="even pointer">
+                                        <td class=" ">Dembelé</td>
+                                        <td class=" ">83</td>
+                                        <td class=" ">19</i></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="x_panel">
+                    <div class="x_title">
+                        <h2>Assistências <small>TOP 3</small></h2>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="x_content">
+                        <div class="table-responsive">
+                            <table class="table table-striped jambo_table bulk_action">
+                                <thead>
+                                    <tr class="headings">
+                                        <th class="column-title">Jogador</th>
+                                        <th class="column-title">Overral</th>
+                                        <th class="column-title">Total</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr class="even pointer">
+                                        <td class=" ">Rashford</td>
+                                        <td class=" ">85</td>
+                                        <td class=" ">35</i></td>
+                                    </tr>
+                                    <tr class="even pointer">
+                                        <td class=" ">Mahrez</td>
+                                        <td class=" ">85</td>
+                                        <td class=" ">29</i></td>
+                                    </tr>
+
+                                    <tr class="even pointer">
+                                        <td class=" ">Dembelé</td>
+                                        <td class=" ">83</td>
+                                        <td class=" ">19</i></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div class="clearfix"><br /></div>
+        <div class="row">
+            <div class="col-md-6 col-sm-6  ">
+                <div class="x_panel">
+                    <div class="x_title">
+                        <h2>Line graph<small>Sessions</small></h2>
+                        <ul class="nav navbar-right panel_toolbox">
+                            <li>
+                                <a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                            </li>
+                            <li class="dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
+                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                    <a class="dropdown-item" href="#">Settings 1</a>
+                                    <a class="dropdown-item" href="#">Settings 2</a>
+                                </div>
+                            </li>
+                            <li>
+                                <a class="close-link"><i class="fa fa-close"></i></a>
+                            </li>
+                        </ul>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="x_content">
+                        <canvas id="lineChart"></canvas>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-sm-6  ">
+                <div class="x_panel">
+                    <div class="x_title">
+                        <h2>Bar graph <small>Sessions</small></h2>
+                        <ul class="nav navbar-right panel_toolbox">
+                            <li>
+                                <a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                            </li>
+                            <li class="dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
+                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                    <a class="dropdown-item" href="#">Settings 1</a>
+                                    <a class="dropdown-item" href="#">Settings 2</a>
+                                </div>
+                            </li>
+                            <li>
+                                <a class="close-link"><i class="fa fa-close"></i></a>
+                            </li>
+                        </ul>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="x_content">
+                        <canvas id="mybarChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="clearfix"><br /></div>
+        <div class="row">
+            <div class="col-md-4">
+                <div class="x_panel fixed_height_320">
+                    <div class="x_title">
+                        <h2>Precisão de Passes <small>%</small></h2>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="x_content">
+                        <div class="dashboard-widget-content">
+                            <div>
+                                <h4>Média</h4>
+                                <canvas id="chart_gauge_02" class=""></canvas>
+                                <div class="goal-wrapper">
+                                    <span class="gauge-value pull-left">%</span>
+                                    <span id="gauge-text2" class="gauge-value pull-left">90</span>
+                                    <span id="goal-text2" class="goal-value pull-right">100</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="x_panel fixed_height_320">
+                    <div class="x_title">
+                        <h2>Posse de Passes <small>%</small></h2>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="x_content">
+                        <div class="dashboard-widget-content">
+                            <div>
+                                <h4>Média</h4>
+                                <canvas id="chart_gauge_03" class=""></canvas>
+                                <div class="goal-wrapper">
+                                    <span class="gauge-value pull-left">%</span>
+                                    <span id="gauge-text3" class="gauge-value pull-left">59</span>
+                                    <span id="goal-text3" class="goal-value pull-right">100</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section scripts{
+    <script src="~/vendors/Chart.js/dist/Chart.js"></script>
+    <script src="~/vendors/gauge.js/dist/gauge.js"></script>
+    <script src="~/build/js/custom.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            init_gauge();
+        });
+    </script>
+}

@@ -1,0 +1,59 @@
+﻿@using System.Linq;
+@using DTO
+@{
+    var listaCliente = (IList<ClienteTradeDTO>)ViewBag.lstCliente;
+
+}
+
+
+<input type="hidden" id="totUsuarioAtivo" value="@ViewBag.UsuarioAtivo" />
+<input type="hidden" id="totUsuarioInativo" value="@ViewBag.UsuarioInativo" />
+<div class="card-box table-responsive">
+    <table class="dataTable table table-striped table-bordered" style="width:100%">
+        <thead>
+            <tr>
+                <th style="display:none"></th>
+                <th>Nome</th>
+                <th>Telefone</th>
+                <th>Plano</th>
+                <th>Ativo</th>
+                <th></th>
+            </tr>
+            <tr>
+                <th style="display:none"></th>
+                <th class="searchItem"></th>
+                <th class="searchItem"></th>
+                <th class="searchItem"></th>
+                <th class="searchItem"></th>
+                <th class="searchItem"></th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (listaCliente != null)
+            {
+                foreach (var item in listaCliente)
+                {
+            <tr>
+                <td style="display:none">@item.Id</td>
+                <td style="width: 30%">@item.Nome</td>
+                <td style="width: 30%">@item.Telefone</td>
+                <td style="width: 30%">@item.DescricaoPlano</td>
+                <td style="vertical-align:middle;text-align: center">
+                    @if (item.Ativo)
+                    {
+                        <span class="badge badge-success">Sim</span>
+                    }
+                    else
+                    {
+                        <span class="badge badge-danger">Não</span>
+                    }
+                </td>
+                <td style="vertical-align:middle; width:10%">
+                    <a class="btn pull-left btn-info" href="@Url.Action("Alterar", "ClienteTrade", new { id = item.Id})" title="Clique aqui para Editar.">Editar</a>
+                </td>
+            </tr>
+                }
+            }
+        </tbody>
+    </table>
+</div>

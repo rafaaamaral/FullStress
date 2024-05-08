@@ -1,0 +1,73 @@
+﻿
+@{
+    ViewBag.Title = "Usuário";
+}
+<div class="container-fluid">
+    <div class="row page-titles mx-0">
+        <div class="col-sm-6 p-md-0">
+            <div class="welcome-text">
+                <h4>Usuários</h4>
+                <p class="mb-0">Lista de Usuários</p>
+            </div>
+        </div>
+        <div class="col-sm-6 p-md-0 justify-content-sm-end mt-2 mt-sm-0 d-flex">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="@Url.Action("Index", "Home")">Home</a></li>
+                <li class="breadcrumb-item active"><a href="#">Usuários</a></li>
+            </ol>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <a href="@Url.Action("Alterar", "Usuario")" class="btn pull-left btn-rounded btn-primary" title="Clique aqui para Adicionar."><i class="fa fa-plus"></i>&nbsp;Adicionar</a>
+                </div>
+                <div class="card-body" id="lista">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section scripts{
+    <script>
+    $(document).ready(function () {
+        carregarLista();
+    });
+
+    function carregarLista() {
+        try {
+            //var objDados = {
+            //    "Ds_Name": $("#dsName").val(),
+            //    "Ds_Acronym": $("#dsAcronym").val(),
+            //    "Ds_State": $("#dsState").val()
+            //};
+
+            $.ajax({
+                async: true,
+                type: 'GET',
+                timeout: 1000000,
+                processData: true,
+                //data: { strDados: JSON.stringify(objDados) },
+                url: '@Url.Action("Lista", "Usuario")',
+                success: function (data) {
+                    if (data !== null) {
+                        if (data !== false) {
+                            $('#lista').empty().html(data);
+                            montarDataTable();
+                        } else {
+                            RetornaAlerta("Erro ao Carregar Dados " + data.DsMensagem, "D");
+                        }
+                    }
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    window.alert(_strMessageNetworkException);
+                }
+            });
+        }
+        catch (e) {
+            RetornaAlerta(e.Message, "D")
+        }
+    }
+    </script>
+}

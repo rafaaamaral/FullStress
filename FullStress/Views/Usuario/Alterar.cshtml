@@ -1,0 +1,122 @@
+﻿@using DTO
+
+@{
+    ViewBag.Title = "Usuário - Alterar";
+}
+
+<div class="container-fluid">
+    <div class="row page-titles mx-0">
+        <div class="col-sm-6 p-md-0">
+            <div class="welcome-text">
+                <h4>Usuários</h4>
+                <p class="mb-0">Cadasto de usuário</p>
+            </div>
+        </div>
+        <div class="col-sm-6 p-md-0 justify-content-sm-end mt-2 mt-sm-0 d-flex">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="@Url.Action("Index", "Home")">Home</a></li>
+                <li class="breadcrumb-item"><a href="@Url.Action("Index", "Usuario")">Usuário</a></li>
+                <li class="breadcrumb-item active"><a href="#">Cadastro</a></li>
+            </ol>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="card-title">Dados</h4>
+                </div>
+                <div class="card-body">
+                    <input type="hidden" id="idUsuario" value="@ViewBag.idUsuario" />
+                    <input type="hidden" id="senha" value="@ViewBag.senha" />
+                    <div class="basic-form">
+                        <form>
+                            <div class="form-row">
+                                <div class="form-group col-md-3">
+                                    <label>Nome*</label>
+                                    <input type="text" id="Nome" required="required" class="form-control" value="@ViewBag.nome">
+                                </div>
+                                <div class="form-group col-md-3">
+                                    <label>PSN ID*</label>
+                                    <input type="text" id="PsnID" name="PsnID" required="required" class="form-control" value="@ViewBag.psnID">
+                                </div>
+                                <div class="form-group col-md-3">
+                                    <label>Login*</label>
+                                    <input type="text" id="Login" name="Login" required="required" class="form-control" value="@ViewBag.login">
+                                </div>
+                                <div class="form-group col-md-3">
+                                    <label>Perfil*</label>
+                                    <select id="IdPerfil" class="form-control select2" style="width:100%">
+                                        <option value="">Selecione...</option>
+                                        @foreach (var perfil in ViewBag.lstPerfil)
+                                        {
+                                            <option value="@perfil.Id" @(ViewBag.idPerfil == perfil.Id ? "selected" : "")>@perfil.Nome</option>
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <div class="col-md-12">
+                        <button type="button" onclick="Salvar();" id="btnSalvar" class="btn btn-primary float-right"><i class="fa fa-check"></i> Salvar</button>
+                        <a href="@Url.Action("Index", "Usuario")" id="btnVolta" class="btn btn-link pull-right"><i class="fa fa-arrow-left"></i> Voltar</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+    $(document).ready(function () {
+    });
+
+    function Salvar() {
+        try {
+
+            $('#btnSalvar').attr('disabled', "");
+
+            var objDados = {
+                "Nome": $('#Nome').val(),
+                "PsnID": $('#PsnID').val(),
+                "Login": $('#Login').val(),
+                "IdPerfil": $('#IdPerfil').val(),
+                "Id": $("#idUsuario").val(),
+                "Senha": $("#senha").val()
+            }
+
+            $.ajax({
+                async: true,
+                type: 'POST',
+                processData: true,
+                data: { strDados: JSON.stringify(objDados) },
+                url: '@Url.Action("SalvarUsuario", "Usuario")',
+                success: function (data) {
+                    if (data !== null) {
+                        if (data.Sucesso === true) {
+                            RetornaAlerta(data.Mensagem, "S");
+                            $('#btnSalvar').removeAttr('disabled');
+                            $('#frmEscondido').submit();
+                        }
+                        else {
+                            RetornaAlerta(data.Mensagem, "D");
+                            $('#btnSalvar').removeAttr('disabled');
+                        }
+                    }
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    RetornaAlerta(textStatus, "D");
+                    $('#btnSalvar').removeAttr('disabled');
+                }
+            });
+        }
+        catch (e) {
+            RetornaAlerta(e.Message, "D");
+            $('#btnSalvar').removeAttr('disabled');
+        }
+    }
+    </script>
+}

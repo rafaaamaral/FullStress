@@ -1,0 +1,80 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.1082
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FullStress", "FullStress\FullStress.csproj", "{05739C65-44D5-4EDC-A63B-2497AEDD5551}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataBase", "DataBase\DataBase.csproj", "{BDE096FC-ACCF-4FA6-B91C-B2C7C62643F3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Business", "Business\Business.csproj", "{95CBB941-8D6D-4B88-9641-9BAC166E889A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DTO", "DTO\DTO.csproj", "{67E1C0BD-93FF-4D2D-AB12-F805889C3827}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Global", "Global\Global.csproj", "{374E804F-8E91-4122-BA36-325A3CFEAA12}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Repositorio", "Repositorio\Repositorio.csproj", "{6CB82DD5-4181-4D95-8658-0C38E46C6043}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{05739C65-44D5-4EDC-A63B-2497AEDD5551}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{05739C65-44D5-4EDC-A63B-2497AEDD5551}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{05739C65-44D5-4EDC-A63B-2497AEDD5551}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{05739C65-44D5-4EDC-A63B-2497AEDD5551}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BDE096FC-ACCF-4FA6-B91C-B2C7C62643F3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BDE096FC-ACCF-4FA6-B91C-B2C7C62643F3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BDE096FC-ACCF-4FA6-B91C-B2C7C62643F3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BDE096FC-ACCF-4FA6-B91C-B2C7C62643F3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{95CBB941-8D6D-4B88-9641-9BAC166E889A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{95CBB941-8D6D-4B88-9641-9BAC166E889A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{95CBB941-8D6D-4B88-9641-9BAC166E889A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{95CBB941-8D6D-4B88-9641-9BAC166E889A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{67E1C0BD-93FF-4D2D-AB12-F805889C3827}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{67E1C0BD-93FF-4D2D-AB12-F805889C3827}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{67E1C0BD-93FF-4D2D-AB12-F805889C3827}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{67E1C0BD-93FF-4D2D-AB12-F805889C3827}.Release|Any CPU.Build.0 = Release|Any CPU
+		{374E804F-8E91-4122-BA36-325A3CFEAA12}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{374E804F-8E91-4122-BA36-325A3CFEAA12}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{374E804F-8E91-4122-BA36-325A3CFEAA12}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{374E804F-8E91-4122-BA36-325A3CFEAA12}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6CB82DD5-4181-4D95-8658-0C38E46C6043}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6CB82DD5-4181-4D95-8658-0C38E46C6043}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6CB82DD5-4181-4D95-8658-0C38E46C6043}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6CB82DD5-4181-4D95-8658-0C38E46C6043}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		EnterpriseLibraryConfigurationToolBinariesPathV6 = packages\EnterpriseLibrary.Common.6.0.1304.0\lib\NET45;packages\EnterpriseLibrary.Data.6.0.1304.0\lib\NET45
+		SolutionGuid = {C9FC1731-AE58-40B9-803F-F78D8D70CD4E}
+	EndGlobalSection
+	GlobalSection(TeamFoundationVersionControl) = preSolution
+		SccNumberOfProjects = 7
+		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccTeamFoundationServer = https://rbamaral.visualstudio.com/
+		SccLocalPath0 = .
+		SccProjectUniqueName1 = FullStress\\FullStress.csproj
+		SccProjectName1 = FullStress
+		SccLocalPath1 = FullStress
+		SccProjectUniqueName2 = DataBase\\DataBase.csproj
+		SccProjectName2 = DataBase
+		SccLocalPath2 = DataBase
+		SccProjectUniqueName3 = Business\\Business.csproj
+		SccProjectName3 = Business
+		SccLocalPath3 = Business
+		SccProjectUniqueName4 = DTO\\DTO.csproj
+		SccProjectName4 = DTO
+		SccLocalPath4 = DTO
+		SccProjectUniqueName5 = Global\\Global.csproj
+		SccProjectName5 = Global
+		SccLocalPath5 = Global
+		SccProjectUniqueName6 = Repositorio\\Repositorio.csproj
+		SccProjectName6 = Repositorio
+		SccLocalPath6 = Repositorio
+	EndGlobalSection
+EndGlobal

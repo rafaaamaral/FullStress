@@ -1,0 +1,131 @@
+﻿@using DTO
+
+@{
+    ViewBag.Title = "Alterar";
+}
+
+<div class="right_col" role="main">
+    <div class="">
+        <div class="page-title">
+            <div class="title_left">
+                <h3>Jogadores - <small>Cadastro / Alteracao de Jogador</small> </h3>
+            </div>
+        </div>
+        <div class="clearfix"></div>
+        <div class="row">
+            <div class="col-md-12 col-sm-12 ">
+                <div class="x_panel">
+                    <div class="x_title">
+                        <h2>Jogador</h2>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="x_content">
+                        <br />
+                        <form id="frmJogador" data-parsley-validate class="form-horizontal form-label-left">
+
+                            <input type="hidden" id="idJogador" value="@ViewBag.idJogador" />
+
+                            <div class="item form-group">
+                                <label class="col-form-label col-md-3 col-sm-3 label-align" for="Nome">
+                                    Nome <span class="required">*</span>
+                                </label>
+                                <div class="col-md-6 col-sm-6 ">
+                                    <input type="text" id="Nome" required="required" class="form-control" value="@ViewBag.nome">
+                                </div>
+                            </div>
+                            <div class="item form-group">
+                                <label class="col-form-label col-md-3 col-sm-3 label-align" for="Overral">
+                                    Overral <span class="required">*</span>
+                                </label>
+                                <div class="col-md-6 col-sm-6 ">
+                                    <input type="text" id="Overral" required="required" class="form-control" value="@ViewBag.overral">
+                                </div>
+                            </div>
+                            <div class="item form-group">
+                                <label class="col-form-label col-md-3 col-sm-3 label-align" for="Link">
+                                    Link <span class="required">*</span>
+                                </label>
+                                <div class="col-md-6 col-sm-6 ">
+                                    <input type="text" id="Link" required="required" class="form-control" value="@ViewBag.link">
+                                </div>
+                            </div>
+                            <div class="item form-group">
+                                <label class="col-form-label col-md-3 col-sm-3 label-align" for="Perfil">
+                                    Tipo Jogador <span class="required">*</span>
+                                </label>
+                                <div class="col-md-6 col-sm-6 ">
+                                    <select id="IdTipoJogador" class="form-control select2" style="width:100%">
+                                        <option value="">Selecione...</option>
+                                        @foreach (var tipoJogador in ViewBag.lstTipoJogador)
+                                        {
+                                            <option value="@tipoJogador.Id" @(ViewBag.idTipoJogador == tipoJogador.Id ? "selected" : "")>@tipoJogador.Descricao</option>
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="ln_solid"></div>
+                            <div class="item form-group pull-right">
+                                <div class="col-md-12">
+                                    <button type="button" onclick="Salvar();" id="btnSalvar" class="btn btn-success pull-right"><i class="fa fa-check"></i> Salvar</button>
+                                    <a href="@Url.Action("Index", "Jogador")" id="btnVolta" class="btn btn-link pull-right"><i class="fa fa-arrow-left"></i> Voltar</a>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<form action="@Url.Action("Index", "Jogador")" method="get" id="frmEscondido" style="display:none;"></form>
+
+@section Scripts {
+    <script>
+    $(document).ready(function () {
+    });
+
+    function Salvar() {
+        try {
+
+            $('#btnSalvar').attr('disabled', "");
+
+            var objDados = {
+                "Id": $("#idJogador").val(),
+                "Nome": $('#Nome').val(),
+                "Overral": $('#Overral').val(),
+                "Link": $('#Link').val(),
+                "IdTipoJogador": $("#IdTipoJogador").val()
+            }
+
+            $.ajax({
+                async: true,
+                type: 'POST',
+                processData: true,
+                data: { strDados: JSON.stringify(objDados) },
+                url: '@Url.Action("SalvarJogador", "Jogador")',
+                success: function (data) {
+                    if (data !== null) {
+                        if (data.Sucesso === true) {
+                            RetornaAlerta(data.Mensagem, "S");
+                            $('#btnSalvar').removeAttr('disabled');
+                            $('#frmEscondido').submit();
+                        }
+                        else {
+                            RetornaAlerta(data.Mensagem, "D");
+                            $('#btnSalvar').removeAttr('disabled');
+                        }
+                    }
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    RetornaAlerta(textStatus, "D");
+                    $('#btnSalvar').removeAttr('disabled');
+                }
+            });
+        }
+        catch (e) {
+            RetornaAlerta(e.Message, "D");
+            $('#btnSalvar').removeAttr('disabled');
+        }
+    }
+    </script>
+}

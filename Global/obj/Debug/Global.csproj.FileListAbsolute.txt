@@ -1,0 +1,12 @@
+C:\Projetos\Rafael\FullStress\FullStress\Global\bin\Debug\Global.dll.config
+C:\Projetos\Rafael\FullStress\FullStress\Global\bin\Debug\Global.dll
+C:\Projetos\Rafael\FullStress\FullStress\Global\bin\Debug\Global.pdb
+C:\Projetos\Rafael\FullStress\FullStress\Global\bin\Debug\EntityFramework.dll
+C:\Projetos\Rafael\FullStress\FullStress\Global\bin\Debug\EntityFramework.SqlServer.dll
+C:\Projetos\Rafael\FullStress\FullStress\Global\bin\Debug\EntityFramework.xml
+C:\Projetos\Rafael\FullStress\FullStress\Global\bin\Debug\EntityFramework.SqlServer.xml
+C:\Projetos\Rafael\FullStress\FullStress\Global\obj\Debug\Global.csprojAssemblyReference.cache
+C:\Projetos\Rafael\FullStress\FullStress\Global\obj\Debug\Global.csproj.CoreCompileInputs.cache
+C:\Projetos\Rafael\FullStress\FullStress\Global\obj\Debug\Global.csproj.CopyComplete
+C:\Projetos\Rafael\FullStress\FullStress\Global\obj\Debug\Global.dll
+C:\Projetos\Rafael\FullStress\FullStress\Global\obj\Debug\Global.pdb

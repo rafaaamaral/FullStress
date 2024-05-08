@@ -1,0 +1,45 @@
+﻿@using System.Linq;
+@using DTO
+@{
+    var listaInscrito = (IList<InscritosStreamerDTO>)ViewBag.lstInscrito;
+
+}
+
+
+<input type="hidden" id="totUsuarioAtivo" value="@ViewBag.UsuarioAtivo" />
+<input type="hidden" id="totUsuarioInativo" value="@ViewBag.UsuarioInativo" />
+<div class="table-responsive">
+    <table class="montarTable display" style="width:100%">
+        <thead>
+            <tr>
+                <th style="display:none"></th>
+                <th>Nome</th>
+                <th>Data Inscrição</th>
+                <th>Ativo</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (listaInscrito != null)
+            {
+                foreach (var item in listaInscrito)
+                {
+            <tr>
+                <td style="display:none">@item.Id</td>
+                <td style="width: 30%">@item.NomeUsuario</td>
+                <td style="width: 30%">@item.DataInscricao.ToShortDateString()</td>
+                <td style="vertical-align:middle;text-align: center">
+                    @if (item.Ativo)
+                    {
+                        <span class="badge badge-success">Sim</span>
+                    }
+                    else
+                    {
+                        <span class="badge badge-danger">Não</span>
+                    }
+                </td>
+            </tr>
+                }
+            }
+        </tbody>
+    </table>
+</div>

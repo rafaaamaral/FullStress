@@ -1,0 +1,258 @@
+﻿@using DTO
+
+@{
+    ViewBag.Title = "Alterar";
+}
+
+<div class="right_col" role="main">
+    <div class="">
+        <div class="page-title">
+            <div class="title_left">
+                <h3>Jogadores - <small>Cadastro / Alteracao de Clube</small> </h3>
+            </div>
+        </div>
+        <div class="clearfix"></div>
+        <div class="row">
+            <div class="col-md-12 col-sm-12 ">
+                <div class="x_panel">
+                    <div class="x_title">
+                        <h2>Clube</h2>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="x_content">
+                        <br />
+                        <form id="frmClube" data-parsley-validate class="form-horizontal form-label-left">
+
+                            <input type="hidden" id="idClube" value="@ViewBag.idClube" />
+
+                            <div class="item form-group">
+                                <label class="col-form-label col-md-3 col-sm-3 label-align" for="Nome">
+                                    Nome <span class="required">*</span>
+                                </label>
+                                <div class="col-md-6 col-sm-6 ">
+                                    <input type="text" id="Nome" required="required" class="form-control" value="@ViewBag.nome">
+                                </div>
+                            </div>
+                            <div class="ln_solid"></div>
+                            <div class="item form-group pull-right">
+                                <div class="col-md-12">
+                                    <button type="button" onclick="Salvar();" id="btnSalvar" class="btn btn-success pull-right"><i class="fa fa-check"></i> Salvar</button>
+                                    <a href="@Url.Action("Index", "Clube")" id="btnVolta" class="btn btn-link pull-right"><i class="fa fa-arrow-left"></i> Voltar</a>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="clearfix"></div>
+        <div id="divClubeJogador" style="display:none">
+            <div class="row">
+                <div class="col-md-12 col-sm-12 ">
+                    <div class="x_panel">
+                        <div class="x_title">
+                            <h2>Lista de Jogadores Vinculado ao Clube</h2>
+                            <div class="clearfix"></div>
+                        </div>
+                        <div class="x_content">
+                            <br />
+                            <div class="col-md-12">
+                                <div class="col-md-8">
+                                    <div class="form-group">
+                                        <label>Jogador <span class="required">*</span></label>
+                                        <select id="IdJogador" class="form-control select2" style="width:100%">
+                                            <option value="">Selecione...</option>
+                                            @if (ViewBag.lstJogador != null)
+                                            {
+                                                foreach (var jogador in ViewBag.lstJogador)
+                                                {
+                                                    <option value="@jogador.Id">@(jogador.Nome + " - " + jogador.Overral)</option>
+                                                }
+                                            }
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <br />
+                                    <button type="button" onclick="SalvarClubeJogador();" id="btnSalvarClubeJogador" class="btn btn-success pull-right"><i class="fa fa-check"></i> Adicionar Jogador</button>
+                                </div>
+                            </div>
+                            <div class="clearfix"></div>
+                            <div class="x_content">
+                                <div class="row">
+                                    <div class="col-sm-12" id="listaJogador">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            if ($("#idClube").val() > 0) {
+                $("#divClubeJogador").show();
+                carregarJogador();
+            }
+
+        });
+
+        function Salvar() {
+            try {
+
+                $('#btnSalvar').attr('disabled', "");
+
+                var objDados = {
+                    "Nome": $('#Nome').val(),
+                    "Id": $("#idClube").val(),
+                }
+
+                $.ajax({
+                    async: true,
+                    type: 'POST',
+                    processData: true,
+                    data: { strDados: JSON.stringify(objDados) },
+                    url: '@Url.Action("SalvarClube", "Clube")',
+                    success: function (data) {
+                        if (data !== null) {
+                            if (data.Sucesso === true) {
+                                RetornaAlerta(data.Mensagem, "S");
+                                $("#divClubeJogador").show();
+                                $("#idClube").val(data.Data);
+                                carregarJogador();
+                                $('#btnSalvar').removeAttr('disabled');
+                            }
+                            else {
+                                RetornaAlerta(data.Mensagem, "D");
+                                $('#btnSalvar').removeAttr('disabled');
+                            }
+                        }
+                    },
+                    error: function (XMLHttpRequest, textStatus, errorThrown) {
+                        RetornaAlerta(textStatus, "D");
+                        $('#btnSalvar').removeAttr('disabled');
+                    }
+                });
+            }
+            catch (e) {
+                RetornaAlerta(e.Message, "D");
+                $('#btnSalvar').removeAttr('disabled');
+            }
+        }
+
+            //JOGADOR CLUBE
+        function carregarJogador() {
+            try {
+                var objDados = {
+                    "Id": $("#idClube").val(),
+                };
+
+                $.ajax({
+                    async: true,
+                    type: 'GET',
+                    timeout: 1000000,
+                    processData: true,
+                    data: { strDados: JSON.stringify(objDados) },
+                    url: '@Url.Action("ListaJogador", "Clube")',
+                    success: function (data) {
+                        if (data !== null) {
+                            if (data !== false) {
+                                $('#listaJogador').empty().html(data);
+                                montarDataTable();
+                            } else {
+                                RetornaAlerta("Erro ao Carregar Dados " + data.DsMensagem, "D");
+                            }
+                        }
+                    },
+                    error: function (XMLHttpRequest, textStatus, errorThrown) {
+                        window.alert(_strMessageNetworkException);
+                    }
+                });
+            }
+            catch (e) {
+                RetornaAlerta(e.Message, "D")
+            }
+        }
+
+        function SalvarClubeJogador() {
+            try {
+
+                $('#btnSalvarJogadorClube').attr('disabled', "");
+
+                var objDados = {
+                    "IdClube": $("#idClube").val(),
+                    "IdJogador": $("#IdJogador").val(),
+                }
+
+                $.ajax({
+                    async: true,
+                    type: 'POST',
+                    processData: true,
+                    data: { strDados: JSON.stringify(objDados) },
+                    url: '@Url.Action("SalvarClubeJogador", "Clube")',
+                    success: function (data) {
+                        if (data !== null) {
+                            if (data.Sucesso === true) {
+                                RetornaAlerta(data.Mensagem, "S");
+                                carregarJogador();
+                                $('#btnSalvarClubeJogador').removeAttr('disabled');
+                            }
+                            else {
+                                RetornaAlerta(data.Mensagem, "D");
+                                $('#btnSalvarClubeJogador').removeAttr('disabled');
+                            }
+                        }
+                    },
+                    error: function (XMLHttpRequest, textStatus, errorThrown) {
+                        RetornaAlerta(textStatus, "D");
+                        $('#btnSalvarClubeJogador').removeAttr('disabled');
+                    }
+                });
+            }
+            catch (e) {
+                RetornaAlerta(e.Message, "D");
+                $('#btnSalvarClubeJogador').removeAttr('disabled');
+            }
+        }
+
+        function ativarDesativar(idClubeJogador, status) {
+            try {
+
+                var objDados = {
+                    "Id": idClubeJogador,
+                    "Ativo": status,
+                }
+
+                $.ajax({
+                    async: true,
+                    type: 'POST',
+                    processData: true,
+                    data: { strDados: JSON.stringify(objDados) },
+                    url: '@Url.Action("AtivarInativarClubeJogador", "Clube")',
+                    success: function (data) {
+                        if (data !== null) {
+                            if (data.Sucesso === true) {
+                                RetornaAlerta(data.Mensagem, "S");
+                                carregarJogador();
+                            }
+                            else {
+                                RetornaAlerta(data.Mensagem, "D");
+                            }
+                        }
+                    },
+                    error: function (XMLHttpRequest, textStatus, errorThrown) {
+                        RetornaAlerta(textStatus, "D");
+                    }
+                });
+            }
+            catch (e) {
+                RetornaAlerta(e.Message, "D");
+                $('#btnSalvarClubeJogador').removeAttr('disabled');
+            }
+        }
+    </script>
+}

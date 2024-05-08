@@ -1,0 +1,35 @@
+﻿@using DTO
+@{
+    var listaJogo = (IList<WeekendLeagueJogoDetalheDTO>)ViewBag.lstJogo;
+}
+
+@if (listaJogo != null)
+{
+    foreach (var detalhe in listaJogo)
+    {
+        <div class="col-md-4">
+            <div class="form-group">
+                <label>Jogador Gol</label>
+                <input type="text" required="required" class="form-control" disabled value="@(detalhe.JogadorGol == null ? "" : detalhe.JogadorGol.Nome + " - " + detalhe.JogadorGol.Overral)">
+            </div>
+        </div>
+        <div class="col-md-2">
+            <div class="form-group">
+                <label>Gols</label>
+                <input type="text" required="required" class="form-control" disabled value="@detalhe.QuantidadeGol">
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="form-group">
+                <label>Jogador Assistencia</label>
+                <input type="text" required="required" class="form-control" disabled value="@(detalhe.JogadorAssistencia == null ? "" : detalhe.JogadorAssistencia.Nome + " - " + detalhe.JogadorAssistencia.Overral)">
+            </div>
+        </div>
+        <div class="col-md-2">
+            <div class="form-group">
+                <label>Gols</label>
+                <input type="text" required="required" class="form-control" disabled value="@detalhe.QuantidadeAssistencia">
+            </div>
+        </div>
+    }
+}

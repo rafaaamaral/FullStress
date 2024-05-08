@@ -1,0 +1,114 @@
+﻿
+@{
+    ViewBag.Title = "Weekend League";
+}
+
+<div class="right_col" role="main">
+    <div class="">
+        <div class="page-title">
+            <div class="title_left">
+                <h3>Weekend League <small> - Lista de WL</small> </h3>
+            </div>
+        </div>
+        <div class="clearfix"></div>
+        <div class="row">
+            <div class="col-md-12 col-sm-12 ">
+                <div class="x_panel">
+                    <div class="x_title">
+                        <a href="@Url.Action("Alterar", "WeekendLeague")" class="btn pull-left btn-success" title="Clique aqui para Adicionar."><i class="fa fa-plus"></i>&nbsp;Adicionar</a>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="x_content">
+                        <div class="row">
+                            <div class="col-sm-12" id="lista">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section scripts{
+    <script>
+        $(document).ready(function () {
+            carregarLista();
+        });
+
+        function carregarLista() {
+            try {
+                //var objDados = {
+                //    "Ds_Name": $("#dsName").val(),
+                //    "Ds_Acronym": $("#dsAcronym").val(),
+                //    "Ds_State": $("#dsState").val()
+                //};
+
+                $.ajax({
+                    async: true,
+                    type: 'GET',
+                    timeout: 1000000,
+                    processData: true,
+                    //data: { strDados: JSON.stringify(objDados) },
+                    url: '@Url.Action("Lista", "WeekendLeague")',
+                    success: function (data) {
+                        if (data !== null) {
+                            if (data !== false) {
+                                $('#lista').empty().html(data);
+                                montarDataTable();
+                            } else {
+                                RetornaAlerta("Erro ao Carregar Dados " + data.DsMensagem, "D");
+                            }
+                        }
+                    },
+                    error: function (XMLHttpRequest, textStatus, errorThrown) {
+                        window.alert(_strMessageNetworkException);
+                    }
+                });
+            }
+            catch (e) {
+                RetornaAlerta(e.Message, "D")
+            }
+        }
+
+        function excluirWeekendLeague(idWeekendLeague)
+        {
+
+            try {
+                waitingDialog.show("Excluindo Weekend League");
+
+                var objDados = {
+                    "Id": idWeekendLeague
+                };
+
+                $.ajax({
+                    async: true,
+                    type: 'POST',
+                    timeout: 1000000,
+                    processData: true,
+                    data: { strDados: JSON.stringify(objDados) },
+                    url: '@Url.Action("ExcluirWeekendLeague", "WeekendLeague")',
+                    success: function (data) {
+                        if (data !== null) {
+                            if (data.Sucesso === true) {
+                                waitingDialog.hide();
+                                RetornaAlerta("Weekend League Excluída com Sucesso", "S");
+                                carregarLista();
+                            } else {
+                                waitingDialog.hide();
+                                RetornaAlerta("Erro ao Excluir WeekendLeague " + data.DsMensagem, "D");
+                            }
+                        }
+                    },
+                    error: function (XMLHttpRequest, textStatus, errorThrown) {
+                        waitingDialog.hide();
+                        window.alert(_strMessageNetworkException);
+                    }
+                });
+            }
+            catch (e) {
+                waitingDialog.hide();
+                RetornaAlerta(e.Message, "D")
+            }
+        }
+    </script>
+}

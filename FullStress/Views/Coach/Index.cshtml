@@ -1,0 +1,98 @@
+﻿@{
+    ViewBag.Title = "Coach";
+}
+
+<div class="right_col" role="main">
+    <div class="">
+        <div class="page-title">
+            <div class="title_left">
+                <h3>Coach <small> - Lista de Coach Solicitados</small> </h3>
+            </div>
+        </div>
+        <div class="clearfix"></div>
+        <div class="row">
+            <div class="col-md-12 col-sm-12 ">
+                <div class="x_panel">
+                    <div class="x_title">
+                        <h2>Filtro</h2>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="x_content">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>Status Coach</label>
+                                        <select id="status" class="form-control select2" style="width:100%">
+                                            <option value="">Todos</option>
+                                            <option value="1">Solicitados</option>
+                                            <option value="2">Respondidos</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="clearfix"></div>
+        <div class="row">
+            <div class="col-md-12 col-sm-12 ">
+                <div class="x_panel">
+                    <div class="x_content">
+                        <div class="row">
+                            <div class="col-sm-12" id="lista">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section scripts{
+    <script>
+    $(document).ready(function () {
+        carregarLista(null);
+
+        $("#status").on('change', function () {
+            carregarLista($(this).val());
+        });
+    });
+
+    function carregarLista(idStatus) {
+        try {
+
+            var objDados = {
+                "Status": idStatus
+            };
+
+            $.ajax({
+                async: true,
+                type: 'GET',
+                timeout: 1000000,
+                processData: true,
+                data: { strDados: JSON.stringify(objDados) },
+                url: '@Url.Action("Lista", "Coach")',
+                success: function (data) {
+                    if (data !== null) {
+                        if (data !== false) {
+                            $('#lista').empty().html(data);
+                            montarDataTable();
+                        } else {
+                            RetornaAlerta("Erro ao Carregar Dados " + data.DsMensagem, "D");
+                        }
+                    }
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    window.alert("Erro");
+                }
+            });
+        }
+        catch (e) {
+            RetornaAlerta(e.Message, "D")
+        }
+    }
+    </script>
+}

@@ -1,0 +1,113 @@
+﻿@{
+    ViewBag.Title = "Alterar";
+}
+
+<div class="right_col" role="main">
+    <div class="">
+        <div class="page-title">
+            <div class="title_left">
+                <h3>Versaoes - <small>Cadastro / Alteracao de Versao</small> </h3>
+            </div>
+        </div>
+        <div class="clearfix"></div>
+        <div class="row">
+            <div class="col-md-12 col-sm-12 ">
+                <div class="x_panel">
+                    <div class="x_title">
+                        <h2>Versao</h2>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="x_content">
+                        <br />
+                        <form id="frmVersao" data-parsley-validate class="form-horizontal form-label-left">
+
+                            <input type="hidden" id="idVersao" value="@ViewBag.idVersao" />
+                            <input type="hidden" id="esCKAtualProducao" value="@ViewBag.atualProducao.ToString()" />
+
+                            <div class="item form-group">
+                                <label class="col-form-label col-md-3 col-sm-3 label-align" for="Nome">
+                                    Nome <span class="required">*</span>
+                                </label>
+                                <div class="col-md-6 col-sm-6 ">
+                                    <input type="text" id="Nome" required="required" class="form-control" value="@ViewBag.nome">
+                                </div>
+                            </div>
+                            <div class="item form-group">
+                                <label class="col-form-label col-md-3 col-sm-3 label-align" for="Nome">
+                                    @*Nome <span class="required">*</span>*@
+                                </label>
+                                <div class="col-md-6 col-sm-6 ">
+                                    <div class="checkbox">
+                                        <label>
+                                            <input type="checkbox" id="AtualProducao" class="flat"> Atual Producao
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="ln_solid"></div>
+                            <div class="item form-group pull-right">
+                                <div class="col-md-12">
+                                    <button type="button" onclick="Salvar();" id="btnSalvar" class="btn btn-success pull-right"><i class="fa fa-check"></i> Salvar</button>
+                                    <a href="@Url.Action("Index", "Versao")" id="btnVolta" class="btn btn-link pull-right"><i class="fa fa-arrow-left"></i> Voltar</a>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<form action="@Url.Action("Index", "Versao")" method="get" id="frmEscondido" style="display:none;"></form>
+
+@section Scripts {
+    <script>
+    $(document).ready(function () {
+        if ($("#esCKAtualProducao").val() == "True") {
+            $("#AtualProducao").prop('checked', true);
+        }
+    });
+
+    function Salvar() {
+        try {
+
+            $('#btnSalvar').attr('disabled', "");
+
+            var objDados = {
+                "Id": $("#idVersao").val(),
+                "Nome": $('#Nome').val(),
+                "AtualProducao": $("#AtualProducao").prop('checked')
+            }
+
+            $.ajax({
+                async: true,
+                type: 'POST',
+                processData: true,
+                data: { strDados: JSON.stringify(objDados) },
+                url: '@Url.Action("SalvarVersao", "Versao")',
+                success: function (data) {
+                    if (data !== null) {
+                        if (data.Sucesso === true) {
+                            RetornaAlerta(data.Mensagem, "S");
+                            $('#btnSalvar').removeAttr('disabled');
+                            $('#frmEscondido').submit();
+                        }
+                        else {
+                            RetornaAlerta(data.Mensagem, "D");
+                            $('#btnSalvar').removeAttr('disabled');
+                        }
+                    }
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    RetornaAlerta(textStatus, "D");
+                    $('#btnSalvar').removeAttr('disabled');
+                }
+            });
+        }
+        catch (e) {
+            RetornaAlerta(e.Message, "D");
+            $('#btnSalvar').removeAttr('disabled');
+        }
+    }
+    </script>
+}

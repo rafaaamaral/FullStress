@@ -1,0 +1,48 @@
+﻿@using System.Linq;
+@using DTO
+@{
+    var listaJogador = (IList<JogadorDTO>)ViewBag.lstJogador;
+
+}
+
+
+<div class="card-box table-responsive">
+    <table class="dataTable table table-striped table-bordered" style="width:100%">
+        <thead>
+            <tr>
+                <th style="display:none"></th>
+                <th>Nome</th>
+                <th>Overral</th>
+                <th>Tipo Jogador</th>
+                <th>Link</th>
+                <th></th>
+            </tr>
+            <tr>
+                <th style="display:none"></th>
+                <th class="searchItem"></th>
+                <th class="searchItem"></th>
+                <th class="searchItem"></th>
+                <th class="searchItem"></th>
+                <th class="searchItem"></th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (listaJogador != null)
+            {
+                foreach (var item in listaJogador)
+                {
+            <tr>
+                <td style="display:none">@item.Id</td>
+                <td style="width: 30%">@item.Nome</td>
+                <td style="width: 30%">@item.Overral</td>
+                <td style="width: 30%;" ><img src="~/Imagens/TipoJogador/@item.TipoJogador.Foto" style="width: 54px; display: block;margin-left: auto;margin-right: auto"></td>
+                <td style="width: 30%;vertical-align:middle;"><a href="@item.Link" target="_blank">Visualizar informações</a></td>
+                <td style="vertical-align:middle; width:10%">
+                    <a class="btn pull-left btn-info" href="@Url.Action("Alterar", "Jogador", new { id = item.Id})" title="Clique aqui para Editar.">Editar</a>
+                </td>
+            </tr>
+                }
+            }
+        </tbody>
+    </table>
+</div>

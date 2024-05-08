@@ -1,0 +1,67 @@
+﻿@using System.Linq;
+@using DTO
+@{
+    var listaJogador = (IList<ClubeJogadorDTO>)ViewBag.lstJogador;
+
+}
+
+
+<div class="card-box table-responsive">
+    <table class="dataTable table table-striped table-bordered" style="width:100%">
+        <thead>
+            <tr>
+                <th style="display:none"></th>
+                <th>Nome</th>
+                <th>Overral</th>
+                <th>Tipo Jogador</th>
+                <th>Status</th>
+                <th>Link</th>
+                <th></th>
+            </tr>
+            <tr>
+                <th style="display:none"></th>
+                <th class="searchItem"></th>
+                <th class="searchItem"></th>
+                <th class="searchItem"></th>
+                <th class="searchItem"></th>
+                <th class="searchItem"></th>
+                <th class="searchItem"></th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (listaJogador != null)
+            {
+                foreach (var item in listaJogador.OrderBy(o => o.Ativo).OrderBy(o => o.Jogador.Nome))
+                {
+                    <tr>
+                        <td style="display:none">@item.Jogador.Id</td>
+                        <td style="width: 30%">@item.Jogador.Nome</td>
+                        <td style="width: 30%">@item.Jogador.Overral</td>
+                        <td style="width: 30%;"><img src="~/Imagens/TipoJogador/@item.Jogador.TipoJogador.Foto" style="width: 54px; display: block;margin-left: auto;margin-right: auto"></td>
+                        <td style="width: 30%;text-align: center;">
+                            @if (item.Ativo)
+                            {
+                                <span class="badge badge-success">Ativo</span>
+                            }
+                            else
+                            {
+                                <span class="badge badge-danger">Inativo</span>
+                            }
+                        </td>
+                        <td style="width: 30%;vertical-align:middle;"><a href="@item.Jogador.Link" target="_blank">Visualizar informações</a></td>
+                        <td style="vertical-align:middle; width:10%">
+                            @if (item.Ativo)
+                            {
+                                <a class="btn pull-left btn-danger" href="#" onclick="ativarDesativar(@item.Id, false)" title="Clique aqui para Editar.">Inativar Jogador</a>
+                            }
+                            else
+                            {
+                                <a class="btn pull-left btn-success" href="#" onclick="ativarDesativar(@item.Id, true)" title="Clique aqui para Editar.">Ativar Jogador</a>
+                            }
+                        </td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+</div>

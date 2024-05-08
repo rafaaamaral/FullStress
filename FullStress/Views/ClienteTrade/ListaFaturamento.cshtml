@@ -1,0 +1,43 @@
+﻿@using System.Linq;
+@using DTO
+@{
+    var listaFaturamento = (IList<ClienteTradeFaturamentoDTO>)ViewBag.lstClienteFaturamento;
+
+}
+
+
+<div class="card-box table-responsive">
+    <table class="dataTable table table-striped table-bordered" style="width:100%">
+        <thead>
+            <tr>
+                <th style="display:none"></th>
+                <th>Início</th>
+                <th>Termino</th>
+                <th>Valor</th>
+                @*<th></th>*@
+            </tr>
+            <tr>
+                <th style="display:none"></th>
+                <th class="searchItem"></th>
+                <th class="searchItem"></th>
+                <th class="searchItem"></th>
+                @*<th class="searchItem"></th>*@
+            </tr>
+        </thead>
+        <tbody>
+            @if (listaFaturamento != null)
+            {
+                foreach (var item in listaFaturamento)
+                {
+                    <tr>
+                        <td style="display: none">@item.Id</td>
+                        <td style="width: 30%">@item.Inicio.ToShortDateString()</td>
+                        <td style="width: 30%">@item.Termino.ToShortDateString()</td>
+                        <td style="width: 30%">@item.Valor.ToString("N2")</td>
+                        @*<td style="width: 30%;vertical-align:middle;"><a href="#" onclick="adicionarJogo(@item.Id); return false;">Visualizar informações</a></td>*@
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+</div>

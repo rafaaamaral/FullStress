@@ -1,0 +1,158 @@
+﻿
+@{
+    ViewBag.Title = "Inscrito";
+}
+
+<div class="container-fluid">
+    <div class="row page-titles mx-0">
+        <div class="col-sm-6 p-md-0">
+            <div class="welcome-text">
+                <h4>Inscritos</h4>
+                <p class="mb-0">Lista de Inscritos</p>
+            </div>
+        </div>
+        <div class="col-sm-6 p-md-0 justify-content-sm-end mt-2 mt-sm-0 d-flex">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="@Url.Action("Index", "Home")">Home</a></li>
+                <li class="breadcrumb-item active"><a href="#">Inscritos</a></li>
+            </ol>
+        </div>
+    </div>
+    <div class="row justify-content-end">
+        <div class="col-lg-3 col-md-3 col-sm-6">
+            <div class="card">
+                <div class="stat-widget-one card-body">
+                    <div class="stat-icon d-inline-block">
+                        <i class="fa fa-check text-success border-success"></i>
+                    </div>
+                    <div class="stat-content d-inline-block">
+                        <div class="stat-text">Ativos</div>
+                        <div class="stat-digit"><span id="usuariosAtivos">0</span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-3 col-sm-6">
+            <div class="card">
+                <div class="stat-widget-one card-body">
+                    <div class="stat-icon d-inline-block">
+                        <i class="fa fa-times text-danger border-danger"></i>
+                    </div>
+                    <div class="stat-content d-inline-block">
+                        <div class="stat-text">Inativos</div>
+                        <div class="stat-digit"><span id="usuariosInativos">0</span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <input type="file" id="arquivoTwitch" />
+                    <a href="#" onclick="importarAquivoIncritos(); return false;" class="btn float-right btn-primary btn-rounded" id="btnImportar" title="Clique aqui para Importar."><i class="fa fa-download"></i>&nbsp;Importar Inscritos Twitch</a>
+                </div>
+                <div class="card-body" id="lista">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section scripts{
+    <script>
+    $(document).ready(function () {
+        carregarLista();
+    });
+
+        function carregarLista() {
+            try {
+                $.ajax({
+                    async: true,
+                    type: 'GET',
+                    timeout: 1000000,
+                    processData: true,
+                    //data: { strDados: JSON.stringify(objDados) },
+                    url: '@Url.Action("Lista", "Inscrito")',
+                    success: function (data) {
+                        if (data !== null) {
+                            if (data !== false) {
+                                $('#lista').empty().html(data);
+                                montarDataTable();
+                                $("#usuariosAtivos").html($("#totUsuarioAtivo").val());
+                                $("#usuariosInativos").html($("#totUsuarioInativo").val());
+                            } else {
+                                RetornaAlerta("Erro ao Carregar Dados " + data.Mensagem, "D");
+                            }
+                        }
+                    },
+                    error: function (XMLHttpRequest, textStatus, errorThrown) {
+                        window.alert(_strMessageNetworkException);
+                    }
+                });
+            }
+            catch (e) {
+                RetornaAlerta(e.Message, "D")
+            }
+        }
+
+        function importarAquivoIncritos() {
+
+            try {
+                $('#btnImportar').attr('disabled', "");
+
+                var data = new FormData();
+
+                if ($("#arquivoTwitch")[0].files.length > 0) {
+                    data.append("file", $("#arquivoTwitch")[0].files[0]);
+                }
+                else {
+                    RetornaAlerta('Selecione um arquivo!', 'W');
+                    return false;
+                }
+                waitingDialog.show('Aguarde o arquivo ser importado');
+
+                var objDados = {};
+
+                data.append("strDados", JSON.stringify(objDados));
+
+                $.ajax({
+                    async: true,
+                    type: 'POST',
+                    processData: false,
+                    contentType: false,
+                    enctype: 'multipart/form-data',
+                    data: data,
+                    url: '@Url.Action("Importar", "Inscrito")',
+                    success: function (data) {
+                        if (data !== null) {
+                            if (data.Sucesso === true) {
+                                RetornaAlerta('Arquivo Importado com sucesso!', 'S');
+                                $(".modal-backdrop").hide();
+                                waitingDialog.hide();
+                                $('#btnImportar').removeAttr("disabled");
+
+                                carregarLista();
+                            }
+                            else {
+                                RetornaAlerta(data.Mensagem, 'D');
+                                $('#btnImportar').removeAttr("disabled");
+                                waitingDialog.hide();
+                            }
+                        }
+                    },
+                    error: function (XMLHttpRequest, textStatus, errorThrown) {
+                        RetornaAlerta("Erro ao importar arquivo", 'D');
+                        $('#btnImportar').removeAttr("disabled");
+                        waitingDialog.hide();
+                    }
+                });
+            }
+            catch (e) {
+                RetornaAlerta("Erro ao importar arquivo", 'D');
+                $('#btnImportar').removeAttr("disabled");
+                waitingDialog.hide();
+            }
+        }
+    </script>
+}

@@ -1,0 +1,75 @@
+﻿@model FullStress.Models.LoginModel
+@{
+    Layout = null;
+}
+
+<html lang="en" class="h-100">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>RBA | ADMIN </title>
+    <!-- Favicon icon -->
+    <link rel="icon" type="image/png" href="~/Imagens/favicon.ico" />
+    <link rel="icon" type="image/png" href="~/Imagens/favicon.ico" />
+    <link href="~/Content/style.css" rel="stylesheet">
+    <style>
+        .backgroundimg {
+            -webkit-background-size: cover;
+            -moz-background-size: cover;
+            -o-background-size: cover;
+            background-size: cover;
+            background-image: url(../../Imagens/background.jpg)
+        }
+    </style>
+
+</head>
+
+
+<body class="h-100 backgroundimg">
+    <div class="authincation h-100">
+        <div class="container-fluid h-100">
+            <div class="row justify-content-center h-100 align-items-center">
+                <div class="col-md-6">
+                    <div class="authincation-content">
+                        <div class="row no-gutters">
+                            <div class="col-xl-12">
+                                <div class="auth-form">
+                                    @if (TempData["msgContent"] != null)
+                                    {
+                                        <div class="alert alert-danger solid alert-rounded "><strong>Erro no Login: </strong>@TempData["msgContent"]</div>
+                                    }
+                                    <h4 class="text-center mb-4">Entrar no sistema</h4>
+                                    @using (Html.BeginForm("Logar", "Login", FormMethod.Post, new { @class = "", id = "formLogin", name = "formLogin", onSubmit = "loadAjaxLoader();" }))
+                                    {
+                                        <div class="form-group">
+                                            <label><strong>Login</strong></label>
+                                            @Html.TextBoxFor(m => m.Login, new { @class = "form-control text-input", @placeholder = "Usuário" })
+                                            @Html.ValidationMessageFor(m => m.Login)
+                                        </div>
+                                        <div class="form-group">
+                                            <label><strong>Password</strong></label>
+                                            @Html.PasswordFor(m => m.Senha, new { @class = "form-control text-input", @placeholder = "Senha" })
+                                            @Html.ValidationMessageFor(m => m.Senha)
+                                        </div>
+                                        <div class="text-center">
+                                            <button type="submit" class="btn btn-primary btn-block">Logar</button>
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="~/vendors/global/global.min.js"></script>
+    <script src="~/Scripts/quixnav-init.js"></script>
+    <script src="~/Scripts/custom.min.js"></script>
+
+</body>
+
+</html>

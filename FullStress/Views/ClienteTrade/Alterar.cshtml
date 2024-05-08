@@ -1,0 +1,274 @@
+﻿@using DTO
+
+@{
+    ViewBag.Title = "Alterar";
+}
+
+<div class="right_col" role="main">
+    <div class="">
+        <div class="page-title">
+            <div class="title_left">
+                <h3>Cliente - <small>Cadastro / Alteracao de Cliente</small> </h3>
+            </div>
+        </div>
+        <div class="clearfix"></div>
+        <div class="row">
+            <div class="col-md-12 col-sm-12 ">
+                <div class="x_panel">
+                    <div class="x_title">
+                        <h2>Cliente</h2>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="x_content">
+                        <br />
+                        <form id="frmClienteTrade" data-parsley-validate class="form-horizontal form-label-left">
+
+                            <input type="hidden" id="idClienteTrade" value="@ViewBag.idClienteTrade" />
+                            <input type="hidden" id="esCKAtivo" value="@ViewBag.ativo.ToString()" />
+
+                            <div class="item form-group">
+                                <label class="col-form-label col-md-3 col-sm-3 label-align" for="Nome">
+                                    Nome <span class="required">*</span>
+                                </label>
+                                <div class="col-md-6 col-sm-6 ">
+                                    <input type="text" id="Nome" required="required" class="form-control" value="@ViewBag.nome">
+                                </div>
+                            </div>
+                            <div class="item form-group">
+                                <label class="col-form-label col-md-3 col-sm-3 label-align" for="Overral">
+                                    Telefone <span class="required">*</span>
+                                </label>
+                                <div class="col-md-6 col-sm-6 ">
+                                    <input type="text" id="Telefone" required="required" class="form-control telefone" value="@ViewBag.telefone">
+                                </div>
+                            </div>
+                            <div class="item form-group">
+                                <label class="col-form-label col-md-3 col-sm-3 label-align" for="Perfil">
+                                    Plano <span class="required">*</span>
+                                </label>
+                                <div class="col-md-6 col-sm-6 ">
+                                    <select id="plano" class="form-control select2" style="width:100%">
+                                        <option value="">Selecione...</option>
+                                        <option value="1" @(ViewBag.plano == 1 ? "selected" : "")>Mensal</option>
+                                        <option value="2" @(ViewBag.plano == 2 ? "selected" : "")>Temporada</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="item form-group">
+                                <label class="col-form-label col-md-3 col-sm-3 label-align">
+                                </label>
+                                <div class="col-md-6 col-sm-6 ">
+                                    <div class="checkbox">
+                                        <label>
+                                            <input type="checkbox" id="Ativo" class="flat"> Ativo
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="ln_solid"></div>
+                            <div class="item form-group pull-right">
+                                <div class="col-md-12">
+                                    <button type="button" onclick="Salvar();" id="btnSalvar" class="btn btn-success pull-right"><i class="fa fa-check"></i> Salvar</button>
+                                    <a href="@Url.Action("Index", "ClienteTrade")" id="btnVolta" class="btn btn-link pull-right"><i class="fa fa-arrow-left"></i> Voltar</a>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="clearfix"></div>
+        <div id="divClienteFaturamento" style="display:none">
+            <div class="row">
+                <div class="col-md-12 col-sm-12 ">
+                    <div class="x_panel">
+                        <div class="x_title">
+                            <div class="col-md-12 pull-right">
+                                <h2>Lista de Faturamento do Cliente</h2>
+                                <button type="button" onclick="adicionarFaturamento();" id="btnAddFaturamento" class="btn btn-success pull-right"><i class="fa fa-plus"></i> Adicionar Faturamento</button>
+                            </div>
+                            <div class="clearfix"></div>
+                        </div>
+                        <div class="x_content">
+                            <br />
+                            <div class="clearfix"></div>
+                            <div class="x_content">
+                                <div class="row">
+                                    <div class="col-sm-12" id="listaFaturamento">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@Html.Partial("_ModalFaturamento")
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            if ($("#esCKAtivo").val() == "True") {
+                $("#Ativo").prop('checked', true);
+            }
+
+            if ($("#idClienteTrade").val() > 0) {
+                $("#divClienteFaturamento").show();
+                carregarFaturamento();
+            }
+        });
+
+        function Salvar() {
+            try {
+
+                $('#btnSalvar').attr('disabled', "");
+
+                var objDados = {
+                    "Id": $("#idClienteTrade").val(),
+                    "Nome": $('#Nome').val(),
+                    "Telefone": $('#Telefone').val(),
+                    "Plano": $('#plano').val(),
+                    "Ativo": $("#Ativo").prop('checked')
+                }
+
+                $.ajax({
+                    async: true,
+                    type: 'POST',
+                    processData: true,
+                    data: { strDados: JSON.stringify(objDados) },
+                    url: '@Url.Action("SalvarClienteTrade", "ClienteTrade")',
+                    success: function (data) {
+                        if (data !== null) {
+                            if (data.Sucesso === true) {
+                                $("#idClienteTrade").val(data.Data);
+                                $("#divClienteFaturamento").show();
+                                carregarFaturamento();
+                                RetornaAlerta(data.Mensagem, "S");
+                                $('#btnSalvar').removeAttr('disabled');
+                            }
+                            else {
+                                RetornaAlerta(data.Mensagem, "D");
+                                $('#btnSalvar').removeAttr('disabled');
+                            }
+                        }
+                    },
+                    error: function (XMLHttpRequest, textStatus, errorThrown) {
+                        RetornaAlerta(textStatus, "D");
+                        $('#btnSalvar').removeAttr('disabled');
+                    }
+                });
+            }
+            catch (e) {
+                RetornaAlerta(e.Message, "D");
+                $('#btnSalvar').removeAttr('disabled');
+            }
+        }
+
+        //Faturamento
+        function carregarFaturamento() {
+            try {
+                var objDados = {
+                    "Id": $("#idClienteTrade").val(),
+                };
+
+                $.ajax({
+                    async: true,
+                    type: 'GET',
+                    timeout: 1000000,
+                    processData: true,
+                    data: { strDados: JSON.stringify(objDados) },
+                    url: '@Url.Action("ListaFaturamento", "ClienteTrade")',
+                    success: function (data) {
+                        if (data !== null) {
+                            if (data !== false) {
+                                $('#listaFaturamento').empty().html(data);
+                                montarDataTable();
+                            } else {
+                                RetornaAlerta("Erro ao Carregar Dados " + data.DsMensagem, "D");
+                            }
+                        }
+                    },
+                    error: function (XMLHttpRequest, textStatus, errorThrown) {
+                        window.alert(_strMessageNetworkException);
+                    }
+                });
+            }
+            catch (e) {
+                RetornaAlerta(e.Message, "D")
+            }
+        }
+
+        function adicionarFaturamento(idFaturamento) {
+            try {
+
+                var objDados = {
+                    "Id": idFaturamento,
+                    "IdClienteTrade": $("#idClienteTrade").val()
+                }
+
+                $.ajax({
+                    async: true,
+                    type: 'POST',
+                    processData: true,
+                    data: { strDados: JSON.stringify(objDados) },
+                    url: '@Url.Action("ObterFaturamento", "ClienteTrade")',
+                    success: function (data) {
+                        if (data != null) {
+                            $('#divFaturamento').empty().html(data);
+                            $("#modalFaturamento").modal('show');
+                            rodarMascaras();
+                        }
+                    },
+                    error: function (XMLHttpRequest, textStatus, errorThrown) {
+                        RetornaAlerta(textStatus, "D");
+                    }
+                });
+            }
+            catch (e) {
+                RetornaAlerta(e.Message, "D");
+            }
+        }
+
+        function salvarFaturamento() {
+            try {
+
+                var objDados = {
+                    "IdClienteTrade": $("#idClienteTrade").val(),
+                    "DtInicio": $('#Inicio').val(),
+                    "DtTermino": $("#Termino").val(),
+                    "VlValor": $("#Valor").val().replace("R$ ", "")
+                }
+
+                $.ajax({
+                    async: true,
+                    type: 'POST',
+                    processData: true,
+                    data: { strDados: JSON.stringify(objDados) },
+                    url: '@Url.Action("SalvarClienteTradeFaturamento", "ClienteTrade")',
+                    success: function (data) {
+                        if (data !== null) {
+                            if (data.Sucesso === true) {
+                                $("#Inicio").val("");
+                                $("#Termino").val("");
+                                $("#Valor").val("");
+                                carregarFaturamento();
+                                $("#modalFaturamento").modal('toggle')
+                            }
+                            else {
+                                RetornaAlerta(data.Mensagem, "D");
+                            }
+                        }
+                    },
+                    error: function (XMLHttpRequest, textStatus, errorThrown) {
+                        RetornaAlerta(textStatus, "D");
+                    }
+                });
+            }
+            catch (e) {
+                RetornaAlerta(e.Message, "D");
+            }
+        }
+    </script>
+}

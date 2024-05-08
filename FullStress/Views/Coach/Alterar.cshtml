@@ -1,0 +1,125 @@
+﻿@using Global.Enum
+
+@{
+    ViewBag.Title = "Alterar";
+}
+
+<div class="right_col" role="main">
+    <div class="">
+        <div class="page-title">
+            <div class="title_left">
+                <h3>Coach - <small>Solicitação de Coach</small> </h3>
+            </div>
+        </div>
+        <div class="clearfix"></div>
+        <div class="row">
+            <div class="col-md-12 col-sm-12 ">
+                <div class="x_panel">
+                    <div class="x_title">
+                        <h2>Coach</h2>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="x_content">
+                        <br />
+                        <form id="frmCoach" data-parsley-validate class="form-horizontal form-label-left">
+
+                            <input type="hidden" id="idCoach" value="@ViewBag.idCoach" />
+
+                            <div class="item form-group">
+                                <label class="col-form-label col-md-3 col-sm-3 label-align" for="Nome">
+                                    Titulo <span class="required">*</span>
+                                </label>
+                                <div class="col-md-6 col-sm-6 ">
+                                    <input type="text" id="Titulo" disabled required="required" class="form-control" value="@ViewBag.titulo">
+                                </div>
+                            </div>
+                            <div class="item form-group">
+                                <label class="col-form-label col-md-3 col-sm-3 label-align" for="Overral">
+                                    Link do Vídeo <span class="required">*</span>
+                                </label>
+                                <div class="col-md-6 col-sm-6 ">
+                                    <input type="text" id="LinkVideo" disabled required="required" class="form-control" value="@ViewBag.linkVideo">
+                                </div>
+                            </div>
+                            <div class="item form-group">
+                                <label class="col-form-label col-md-3 col-sm-3 label-align" for="Link">
+                                    Observação
+                                </label>
+                                <div class="col-md-6 col-sm-6 ">
+                                    <textarea class="form-control" id="Observacao" disabled rows="4">@ViewBag.observacaoPlayer</textarea>
+                                </div>
+                            </div>
+                            <div class="item form-group">
+                                <label class="col-form-label col-md-3 col-sm-3 label-align" for="Perfil">
+                                    Feedback Coach <span class="required"></span>
+                                </label>
+                                <div class="col-md-6 col-sm-6 ">
+                                    <textarea class="form-control" rows="10" name="descr" id="feedbackCoach">@ViewBag.feedBackCoach</textarea>
+                                </div>
+                            </div>
+                            <div class="ln_solid"></div>
+                            <div class="item form-group pull-right">
+                                <div class="col-md-12">
+                                    @if (ViewBag.idStatus != (int)StatusCoach.Respondido)
+                                    {
+                                        <button type="button" onclick="Salvar();" id="btnSalvar" class="btn btn-success pull-right"><i class="fa fa-check"></i> Salvar</button>
+                                    }
+                                    <a href="@Url.Action("Index", "Coach")" id="btnVolta" class="btn btn-link pull-right"><i class="fa fa-arrow-left"></i> Voltar</a>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<form action="@Url.Action("Index", "Coach")" method="get" id="frmEscondido" style="display:none;"></form>
+
+@section Scripts {
+    <script>
+    $(document).ready(function () {
+    });
+
+    function Salvar() {
+        try {
+
+            $('#btnSalvar').attr('disabled', "");
+
+            var objDados = {
+                "Id": $("#idCoach").val(),
+                "FeedbackCoach": $('#feedbackCoach').val()
+            }
+
+            $.ajax({
+                async: true,
+                type: 'POST',
+                processData: true,
+                data: { strDados: JSON.stringify(objDados) },
+                url: '@Url.Action("ResponderCoach", "Coach")',
+                success: function (data) {
+                    if (data !== null) {
+                        if (data.Sucesso === true) {
+                            RetornaAlerta(data.Mensagem, "S");
+                            $('#btnSalvar').removeAttr('disabled');
+                            $('#frmEscondido').submit();
+                        }
+                        else {
+                            RetornaAlerta(data.Mensagem, "D");
+                            $('#btnSalvar').removeAttr('disabled');
+                        }
+                    }
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    RetornaAlerta(textStatus, "D");
+                    $('#btnSalvar').removeAttr('disabled');
+                }
+            });
+        }
+        catch (e) {
+            RetornaAlerta(e.Message, "D");
+            $('#btnSalvar').removeAttr('disabled');
+        }
+    }
+    </script>
+}

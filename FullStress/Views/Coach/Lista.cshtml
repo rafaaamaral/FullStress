@@ -1,0 +1,53 @@
+﻿@using Global.Enum;
+@using DTO
+@{
+    var listaCoach = (IList<CoachDTO>)ViewBag.lstCoach;
+
+}
+
+<div class="card-box table-responsive">
+    <table class="dataTable table table-striped table-bordered" style="width:100%">
+        <thead>
+            <tr>
+                <th style="display:none"></th>
+                <th>Solicitante</th>
+                <th>Titulo</th>
+                <th>Status</th>
+                <th></th>
+            </tr>
+            <tr>
+                <th style="display:none"></th>
+                <th class="searchItem"></th>
+                <th class="searchItem"></th>
+                <th class="searchItem"></th>
+                <th class="searchItem"></th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (listaCoach != null)
+            {
+                foreach (var item in listaCoach)
+                {
+            <tr>
+                <td style="display:none">@item.Id</td>
+                <td style="width: 30%">@item.Player.Nome</td>
+                <td style="width: 30%">@item.Titulo</td>
+                <td style="width: 30%; vertical-align:middle;text-align: center;">
+                    @if (item.Status == (int)StatusCoach.Solicitado)
+                    {
+                        <span class="badge badge-warning">@item.DescricaoStatus</span>
+                    }
+                    else
+                    {
+                        <span class="badge badge-success">@item.DescricaoStatus</span>
+                    }
+                </td>
+                <td style="vertical-align:middle; width:10%">
+                    <a class="btn pull-left btn-info" href="@Url.Action("Alterar", "Coach", new { id = item.Id})" title="Clique aqui para responder.">Responder</a>
+                </td>
+            </tr>
+                }
+            }
+        </tbody>
+    </table>
+</div>

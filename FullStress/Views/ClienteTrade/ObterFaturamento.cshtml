@@ -1,0 +1,37 @@
+﻿<div class="modal-body">
+    <div id="alertasModal"></div>
+    <div id="modal-alertas-Euler"></div>
+    <div class="row">
+        <div class="nav-tabs-custom">
+            <div class="tab-content">
+                <div class="tab-pane active" id="tab_Euler_1-1">
+                    <div class="col-md-12">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>Início <span class="required">*</span></label>
+                                <input type="text" id="Inicio" value="@ViewBag.Inicio" required="required" class="form-control data">
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>Termino <span class="required">*</span></label>
+                                <input type="text" id="Termino" value="@ViewBag.Termino" required="required" class="form-control data">
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>Valor <span class="required">*</span></label>
+                                <input type="text" id="Valor" value="@ViewBag.Valor" required="required" class="form-control valor">
+                            </div>
+                        </div>
+                    </div>
+                    <p>&nbsp;</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-link" data-dismiss="modal"><i class="fa fa-times"></i>&nbsp;Cancelar</button>
+    <button type="button" onclick="salvarFaturamento();" class="btn btn-success pull-right"><i class="fa fa-check"></i> Salvar Faturamento</button>
+</div>

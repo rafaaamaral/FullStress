@@ -1,0 +1,439 @@
+﻿@using Global.Enum
+
+@{
+    ViewBag.Title = "Alterar";
+}
+
+<div class="right_col" role="main">
+    <div class="">
+        <div class="page-title">
+            <div class="title_left">
+                <h3>Weekend League - <small>Administrar WL</small> </h3>
+            </div>
+        </div>
+        <div class="clearfix"></div>
+        <div class="row">
+            <div class="col-md-12 col-sm-12 ">
+                <div class="x_panel">
+                    <div class="x_title">
+                        <h2>Weekend League</h2>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="x_content">
+                        <br />
+                        <form id="frmWeekendLeague" data-parsley-validate class="form-horizontal form-label-left">
+
+                            <input type="hidden" id="idWeekendLeague" value="@ViewBag.idWeekendLeague" />
+                            <input type="hidden" id="esCKtop100" value="@ViewBag.top100.ToString()" />
+                            <input type="hidden" id="status" value="@ViewBag.Status" />
+
+                            <div class="item form-group">
+                                <label class="col-form-label col-md-3 col-sm-3 label-align" for="Nome">
+                                    Descrição <span class="required">*</span>
+                                </label>
+                                <div class="col-md-6 col-sm-6 ">
+                                    <input type="text" id="Descricao" onblur="Salvar()" required="required" class="form-control" value="@ViewBag.descricao">
+                                </div>
+                            </div>
+                            <div class="item form-group">
+                                <label class="col-form-label col-md-3 col-sm-3 label-align">
+                                </label>
+                                <div class="col-md-6 col-sm-6 ">
+                                    <div class="checkbox">
+                                        <label>
+                                            <input type="checkbox" id="Top100" class="flat"> Top 100
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="ln_solid"></div>
+                            <div class="item form-group pull-right">
+                                <div class="col-md-12">
+                                    @if (ViewBag.Status != (int)StatusWeekendLeague.Finalizada)
+                                    {
+                                        <button type="button" onclick="encerrarWL();" id="btnSalvar" class="btn btn-success pull-right"><i class="fa fa-check"></i> Encerrar WL</button>
+                                    }
+                                    <a href="@Url.Action("Index", "WeekendLeague")" id="btnVolta" class="btn btn-link pull-right"><i class="fa fa-arrow-left"></i> Voltar</a>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="clearfix"></div>
+        <div class="row">
+            <div class="col-md-12 col-sm-12 ">
+                <div class="x_panel">
+                    <div class="x_title">
+                        <div class="col-md-12 pull-right">
+                            <h2>Lista de Jogos na Weekend League</h2>
+                            @if (ViewBag.Status != (int)StatusWeekendLeague.Finalizada)
+                            {
+                                <button type="button" onclick="adicionarJogo();" id="btnAddJogo" class="btn btn-success pull-right"><i class="fa fa-plus"></i> Adicionar Jogo</button>
+                            }
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="x_content">
+                        <div class="row">
+                            <div class="col-sm-12" id="listaJogo">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<form action="@Url.Action("Index", "WeekendLeague")" method="get" id="frmEscondido" style="display:none;"></form>
+@Html.Partial("_ModalJogo")
+@section Scripts {
+    <script>
+        var artilheiro = [];
+        var removerartilheiro = [];
+
+        $(document).ready(function () {
+            if ($("#esCKtop100").val() == "True") {
+                $("#Top100").prop('checked', true);
+            }
+
+            if ($("#idWeekendLeague").val() > 0) {
+                carregarJogo();
+            }
+        });
+
+        function Salvar() {
+            try {
+
+                var objDados = {
+                    "Id": $("#idWeekendLeague").val(),
+                    "Descricao": $('#Descricao').val(),
+                    "Top100": $("#Top100").prop('checked'),
+                    "Status": $("#status").val()
+                }
+
+                $.ajax({
+                    async: true,
+                    type: 'POST',
+                    processData: true,
+                    data: { strDados: JSON.stringify(objDados) },
+                    url: '@Url.Action("SalvarWeekendLeague", "WeekendLeague")',
+                    success: function (data) {
+                        if (data !== null) {
+                            if (data.Sucesso === true) {
+                            }
+                            else {
+                                RetornaAlerta(data.Mensagem, "D");
+                            }
+                        }
+                    },
+                    error: function (XMLHttpRequest, textStatus, errorThrown) {
+                        RetornaAlerta(textStatus, "D");
+                    }
+                });
+            }
+            catch (e) {
+                RetornaAlerta(e.Message, "D");
+            }
+        }
+
+        function encerrarWL() {
+            try {
+
+                var objDados = {
+                    "Id": $("#idWeekendLeague").val(),
+                    "Descricao": $('#Descricao').val(),
+                    "Top100": $("#Top100").prop('checked'),
+                    "Status": 3 //Finalizada
+                }
+
+                $.ajax({
+                    async: true,
+                    type: 'POST',
+                    processData: true,
+                    data: { strDados: JSON.stringify(objDados) },
+                    url: '@Url.Action("SalvarWeekendLeague", "WeekendLeague")',
+                    success: function (data) {
+                        if (data !== null) {
+                            if (data.Sucesso === true) {
+                                RetornaAlerta("Weekend League encerrada com sucesso", "S");
+                                $("#frmEscondido").submit();
+                            }
+                            else {
+                                RetornaAlerta(data.Mensagem, "D");
+                            }
+                        }
+                    },
+                    error: function (XMLHttpRequest, textStatus, errorThrown) {
+                        RetornaAlerta(textStatus, "D");
+                    }
+                });
+            }
+            catch (e) {
+                RetornaAlerta(e.Message, "D");
+            }
+        }
+
+        //JOGO WL
+
+        function adicionarJogo() {
+            adicionarJogo(0);
+        }
+
+        function carregarJogo() {
+            try {
+                var objDados = {
+                    "Id": $("#idWeekendLeague").val(),
+                };
+
+                $.ajax({
+                    async: true,
+                    type: 'GET',
+                    timeout: 1000000,
+                    processData: true,
+                    data: { strDados: JSON.stringify(objDados) },
+                    url: '@Url.Action("ListaJogo", "WeekendLeague")',
+                    success: function (data) {
+                        if (data !== null) {
+                            if (data !== false) {
+                                $('#listaJogo').empty().html(data);
+                                montarDataTable();
+                            } else {
+                                RetornaAlerta("Erro ao Carregar Dados " + data.DsMensagem, "D");
+                            }
+                        }
+                    },
+                    error: function (XMLHttpRequest, textStatus, errorThrown) {
+                        window.alert(_strMessageNetworkException);
+                    }
+                });
+            }
+            catch (e) {
+                RetornaAlerta(e.Message, "D")
+            }
+        }
+
+        function adicionarDetalhe() {
+            var obj = { IdJogadorGol: $("#IdJogadorGol").val(), QuantidadeGol: $("#quantidadeGols").val(), IdJogadorAssistencia: $("#IdJogadorAssistencia").val(), QuantidadeAssistencia: $("#quantidadeAssistencia").val() }
+
+            artilheiro.push(obj);
+
+            var x = $("#IdJogadorGol").val();
+            var html = "<div id='divArtilheiro" + x + "'>";
+            html += "<div class='col-md-4'>";
+            html += "<div class='form-group'>";
+            html += "<input type='text' class='form-control' maxlength='100' value='" + $("#IdJogadorGol option:selected").text() + "' disabled />"
+            html += "</div>";
+            html += "</div>";
+            html += "<div class='col-md-2'>";
+            html += "<div class='form-group'>";
+            html += "<input type='text' id='quantidadeGols' required='required' class='form-control' disabled value='" + $("#quantidadeGols").val() + "'>";
+            html += "</div>";
+            html += "</div>";
+            html += "<div class='col-md-4'>";
+            html += "<div class='form-group'>";
+            html += "<input type='text' class='form-control' maxlength='100' value='" + $("#IdJogadorAssistencia option:selected").text() + "' disabled />"
+            html += "</div>";
+            html += "</div>";
+            html += "<div class='col-md-2'>";
+            html += "<div class='form-group'>";
+            html += "<div class='input-group'>";
+            html += "<input type='text' id='quantidadeAssistencia' required='required' class='form-control' disabled value='" + $("#quantidadeAssistencia").val() + "'>";
+            html += "<span class='input-group-btn'>";
+            html += "<button type='button' name='add' onclick='removerDetalhe(" + $("#IdJogadorGol").val() + ", " + $("#IdJogadorAssistencia").val() + ")' class='btn btn-info'>";
+            html += "<i class='fa fa-times'></i>";
+            html += "</button>"
+            html += "</span>";
+            html += "</div>";
+            html += "</div>";
+            html += "</div>";
+            html += "</div>";
+            html += "</div>";
+
+            $("#divArtilheiro").append(html);
+
+            $("#IdJogadorGol").val("").trigger('change');
+            $("#quantidadeGols").val("");
+            $("#IdJogadorAssistencia").val("").trigger('change');
+            $("#quantidadeAssistencia").val("");
+
+        }
+
+        function removerDetalhe(id, idAssistencia) {
+            var obj = { Id_JogadorGol: id, Id_JogadorAssistencia: idAssistencia };
+
+            removerartilheiro.push(obj);
+            arrayRemoveArtilheiro(artilheiro, id, idAssistencia);
+            $("#divArtilheiro" + id).remove();
+        }
+
+        function arrayRemoveArtilheiro(arr, value, value1) {
+            var index = arr.findIndex(x => x.IdJogadorGol == value && x.IdJogadorAssistencia == value1);
+            if (index > -1) {
+                arr.splice(index, 1);
+            }
+        }
+
+        function adicionarJogo(idJogo) {
+            try {
+
+                var objDados = {
+                    "Id": idJogo,
+                    "IdWeekendLeague": $("#idWeekendLeague").val()
+                }
+
+                $.ajax({
+                    async: true,
+                    type: 'POST',
+                    processData: true,
+                    data: { strDados: JSON.stringify(objDados) },
+                    url: '@Url.Action("ObterJogo", "WeekendLeague")',
+                    success: function (data) {
+                        if (data != null) {
+                            $('#divJogo').empty().html(data);
+                            if (idJogo > 0) {
+                                carregarDetalhe(idJogo);
+                                $(".desabilitarVisualizar").attr("disabled", "disabled");
+                            }
+                            $("#modalJogo").modal('show');
+                        }
+                    },
+                    error: function (XMLHttpRequest, textStatus, errorThrown) {
+                        RetornaAlerta(textStatus, "D");
+                    }
+                });
+            }
+            catch (e) {
+                RetornaAlerta(e.Message, "D");
+            }
+        }
+
+        function salvarJogo() {
+            try {
+
+                var objDados = {
+                    "IdWeekendLeague": $("#idWeekendLeague").val(),
+                    "GolsFavor": $('#golsFavor').val(),
+                    "GolsContra": $("#golsContra").val(),
+                    "PsnAdversario": $("#psnAdvsersario").val(),
+                    "PrecisaoPasses": $("#precisaoPasses").val(),
+                    "PosseDeBola": $("#posseBola").val(),
+                    "Observacao": $("#Observacao").val(),
+                    "IdJogadorMelhorCampo": $("#IdMelhorEmCampo").val(),
+                    "QuitRage": $("#quitRage").prop('checked'),
+                    "ListaJogoDetalhe": artilheiro,
+                    "ListaRemoverJogoDetalhe": removerartilheiro,
+                }
+
+                $.ajax({
+                    async: true,
+                    type: 'POST',
+                    processData: true,
+                    data: { strDados: JSON.stringify(objDados) },
+                    url: '@Url.Action("SalvarWeekendLeagueJogo", "WeekendLeague")',
+                    success: function (data) {
+                        if (data !== null) {
+                            if (data.Sucesso === true) {
+                                $("#golsFavor").val("");
+                                $("#golsContra").val("");
+                                $("#psnAdvsersario").val("");
+                                $("#precisaoPasses").val("");
+                                $("#posseBola").val("");
+                                $("#IdMelhorEmCampo").val("").trigger('change');
+                                $("#quitRage").prop('checked', false);
+                                artilheiro = [];
+                                removerartilheiro = [];
+                                RetornaAlerta(data.Mensagem, "S");
+                                carregarJogo();
+                                $("#modalJogo").modal('toggle')
+                            }
+                            else {
+                                RetornaAlerta(data.Mensagem, "D");
+                            }
+                        }
+                    },
+                    error: function (XMLHttpRequest, textStatus, errorThrown) {
+                        RetornaAlerta(textStatus, "D");
+                    }
+                });
+            }
+            catch (e) {
+                RetornaAlerta(e.Message, "D");
+            }
+        }
+
+        function carregarDetalhe(idJogo) {
+            try {
+                var objDados = {
+                    "Id": idJogo,
+                };
+
+                $.ajax({
+                    async: true,
+                    type: 'GET',
+                    timeout: 1000000,
+                    processData: true,
+                    data: { strDados: JSON.stringify(objDados) },
+                    url: '@Url.Action("ListaJogoDetalhe", "WeekendLeague")',
+                    success: function (data) {
+                        if (data !== null) {
+                            if (data !== false) {
+                                $('#divArtilheiro').empty().html(data);
+                            } else {
+                                RetornaAlerta("Erro ao Carregar Dados " + data.DsMensagem, "D");
+                            }
+                        }
+                    },
+                    error: function (XMLHttpRequest, textStatus, errorThrown) {
+                        window.alert(_strMessageNetworkException);
+                    }
+                });
+            }
+            catch (e) {
+                RetornaAlerta(e.Message, "D")
+            }
+        }
+
+        function excluirWeekendLeagueJogo(idWeekendLeagueJogo)
+        {
+            try {
+                waitingDialog.show("Excluindo Jogo da WL");
+
+                var objDados = {
+                    "Id": idWeekendLeagueJogo
+                };
+
+                $.ajax({
+                    async: true,
+                    type: 'POST',
+                    timeout: 1000000,
+                    processData: true,
+                    data: { strDados: JSON.stringify(objDados) },
+                    url: '@Url.Action("ExcluirWeekendLeagueJogo", "WeekendLeague")',
+                    success: function (data) {
+                        if (data !== null) {
+                            waitingDialog.hide();
+                            if (data.Sucesso === true) {
+                                RetornaAlerta("Jogo Excluído com Sucesso", "S");
+
+                                carregarJogo();
+                            } else {
+                                waitingDialog.hide();
+                                RetornaAlerta("Erro ao Excluir Jogo da WL " + data.DsMensagem, "D");
+                            }
+                        }
+                    },
+                    error: function (XMLHttpRequest, textStatus, errorThrown) {
+                        waitingDialog.hide();
+                        window.alert(_strMessageNetworkException);
+                    }
+                });
+            }
+            catch (e) {
+                waitingDialog.hide();
+                RetornaAlerta(e.Message, "D")
+            }
+        }
+    </script>
+}

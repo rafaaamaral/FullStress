@@ -1,0 +1,39 @@
+﻿@using System.Linq;
+@using DTO
+@{
+    var listaClube = (IList<ClubeDTO>)ViewBag.lstClube;
+
+}
+
+
+<div class="card-box table-responsive">
+    <table class="dataTable table table-striped table-bordered" style="width:100%">
+        <thead>
+            <tr>
+                <th style="display:none"></th>
+                <th>Nome</th>
+                <th></th>
+            </tr>
+            <tr>
+                <th style="display:none"></th>
+                <th class="searchItem"></th>
+                <th class="searchItem"></th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (listaClube != null)
+            {
+                foreach (var item in listaClube)
+                {
+                    <tr>
+                        <td style="display:none">@item.Id</td>
+                        <td style="width: 30%">@item.Nome</td>
+                        <td style="vertical-align:middle; width:10%">
+                            <a class="btn pull-left btn-info" href="@Url.Action("Alterar", "Clube", new { id = item.Id})" title="Clique aqui para Editar.">Editar</a>
+                        </td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+</div>

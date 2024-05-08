@@ -1,0 +1,12 @@
+C:\Projetos\Rafael\FullStress\FullStress\DTO\bin\Debug\DTO.dll
+C:\Projetos\Rafael\FullStress\FullStress\DTO\bin\Debug\DTO.pdb
+C:\Projetos\Rafael\FullStress\FullStress\DTO\bin\Debug\Global.dll
+C:\Projetos\Rafael\FullStress\FullStress\DTO\bin\Debug\EntityFramework.dll
+C:\Projetos\Rafael\FullStress\FullStress\DTO\bin\Debug\Global.pdb
+C:\Projetos\Rafael\FullStress\FullStress\DTO\bin\Debug\Global.dll.config
+C:\Projetos\Rafael\FullStress\FullStress\DTO\bin\Debug\EntityFramework.xml
+C:\Projetos\Rafael\FullStress\FullStress\DTO\obj\Debug\DTO.csprojAssemblyReference.cache
+C:\Projetos\Rafael\FullStress\FullStress\DTO\obj\Debug\DTO.csproj.CoreCompileInputs.cache
+C:\Projetos\Rafael\FullStress\FullStress\DTO\obj\Debug\DTO.csproj.CopyComplete
+C:\Projetos\Rafael\FullStress\FullStress\DTO\obj\Debug\DTO.dll
+C:\Projetos\Rafael\FullStress\FullStress\DTO\obj\Debug\DTO.pdb

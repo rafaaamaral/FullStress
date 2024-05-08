@@ -1,0 +1,28 @@
+﻿@using FullStress.Util
+
+<ul class="metismenu" id="menu">
+    <li class="nav-label first">Módulos</li>
+    @{
+        /**/
+
+        var transacaoModulo = UsuarioLogado.Usuario.PerfilModuloTransacao;
+
+        foreach (var idModulo in transacaoModulo.Select(s => s.ModuloTransacao.IdModulo).ToList().Distinct().ToList())
+        {
+            var modulo = transacaoModulo.FirstOrDefault(f => f.ModuloTransacao.IdModulo == idModulo).ModuloTransacao.Modulo;
+
+            <li>
+                <a class="has-arrow" href="javascript:void()" aria-expanded="false">
+                    <i class="fa @modulo.Icone"></i><span class="nav-text">@modulo.Descricao</span>
+                </a>
+                <ul aria-expanded="false">
+                    @foreach (var transacao in transacaoModulo.Where(w => w.ModuloTransacao.IdModulo == idModulo && w.Ativo)
+            .Select(s => s.ModuloTransacao.Transacao).OrderBy(o => o.Descricao))
+                    {
+                        <li><a href="@Url.Action("Index", transacao.URL)">@transacao.Descricao</a></li>
+                    }
+                </ul>
+            </li>
+        }
+    }
+</ul>

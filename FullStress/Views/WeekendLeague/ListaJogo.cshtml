@@ -1,0 +1,75 @@
+﻿@using System.Linq;
+@using DTO
+@{
+    var listaJogo = (IList<WeekendLeagueJogoDTO>)ViewBag.lstJogo;
+
+}
+
+
+<div class="card-box table-responsive">
+    <table class="dataTable table table-striped table-bordered" style="width:100%">
+        <thead>
+            <tr>
+                <th style="display:none"></th>
+                <th>Gols a Favor</th>
+                <th>Gols Adversário</th>
+                <th>Adversário</th>
+                <th>Vitória</th>
+                <th>Quit Rage</th>
+                <th>Observação</th>
+                <th></th>
+                <th></th>
+            </tr>
+            <tr>
+                <th style="display:none"></th>
+                <th class="searchItem"></th>
+                <th class="searchItem"></th>
+                <th class="searchItem"></th>
+                <th class="searchItem"></th>
+                <th class="searchItem"></th>
+                <th class="searchItem"></th>
+                <th class="searchItem"></th>
+                <th class="searchItem"></th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (listaJogo != null)
+            {
+                foreach (var item in listaJogo)
+                {
+                    <tr>
+                        <td style="display: none">@item.Id</td>
+                        <td style="width: 30%">@item.GolsFavor</td>
+                        <td style="width: 30%">@item.GolsContra</td>
+                        <td style="width: 30%">@item.PsnAdversario</td>
+                        <td style="width: 30%; text-align: center;">
+                            @if (item.Vitoria)
+                            {
+                                <span class="badge badge-success"><i class="fa fa-check"></i></span>
+                            }
+                            else
+                            {
+                                <span class="badge badge-danger"><i class="fa fa-times"></i></span>
+                            }
+                        </td>
+                        <td style="width: 30%;text-align: center;">
+                            @if (item.QuitRage)
+                            {
+                                <span class="badge badge-success">Sim</span>
+                            }
+                            else
+                            {
+                                <span class="badge badge-danger">Não</span>
+                            }
+                        </td>
+                        <td style="width: 30%">@item.Observacao</td>
+                        <td style="width: 30%;vertical-align:middle;"><a href="#" onclick="adicionarJogo(@item.Id); return false;">Visualizar informações</a></td>
+                        <td style="width: 30%;vertical-align:middle;">
+                            <a class="btn pull-left btn-danger" href="#" onclick="excluirWeekendLeagueJogo(@item.Id)" title="Clique aqui para Excluir.">Excluir</a>
+                        </td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+</div>
